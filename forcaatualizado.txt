@@ -1,0 +1,126 @@
+import random
+import os
+import time
+
+# função para inserir palavras e dicas no modo café com leite
+def inserir():
+    print('------------------ MENU -------------------')
+    print('-> INSERIR NOVA PALAVRA E DICA      [ 1 ] <-')
+    print('-> NÃO INSERIR NOVA PALAVRA E DICA  [ 2 ] <-')
+    print('-> SAIR DO JOGO                     [ 3 ] <-')
+
+    menu = int(input('------- DIGITE UMA DAS OPÇÕES ACIMA: -------'))
+
+    match menu:
+        case 1:
+            print('Digite uma nova palavra e uma nova dica')
+
+        case 2:
+            print('CONTINUE')
+
+        case 3:
+            print('QUE PENA, VOCÊ SAIU DO JOGO! ATÉ A PROXIMA!')
+
+
+print('->->->->->-> O JOGO COMEÇOU <-<-<-<-<-<-')
+print('BEM VINDO(A) AO CLÁSSICO JOGO DA FORCA')
+
+
+palavras = ['artista', 'amor', 'pescador', 'livro', 'cadeira',
+                'banana', 'internet', 'morango', 'bailarina', 'cadeado',
+            'biscoito', 'pacote', 'shampoo', 'mercado'
+            ]
+
+dicas = ['aquele que cultiva as belas-artes', 'Forte afeição por outra pessoa', 'Profissão daquele que pesca',
+         'Coleção de folhas de papel', 'Peça de mobília', 'Fruta amarela', 'Rede de conexões globais', 'Fruta vermelha',
+         'Profissional de dança especifica', 'Fechadura portátil', 'Alimento assado no forno em pequenas porções',
+         'Pequeno embrulho', 'Espécie de sabonete com fórmula específica para o cabelo', 'Local onde se compram coisas'
+         ]
+
+palavra_sorteada = random.choice(palavras).upper()
+
+
+def Nutella():
+    vidas = 6
+    letras_digitadas = []
+    letras_atual = ['_'] * len(palavra_sorteada)
+
+    while vidas != 0:
+
+        letra = input('Digite uma letra: ').upper()
+        letras_digitadas.append(letra)
+
+        if letra in palavra_sorteada:
+            print('Você acertou uma letra!')
+            for item in range(len(palavra_sorteada)):
+                if letra == palavra_sorteada[item]:
+                    letras_atual[item] = letra
+
+        else:
+            vidas -= 1
+            if vidas == 5:
+                palavra_index = palavras.index(palavra_sorteada.lower())
+                dica = dicas[palavra_index]
+                print(dica)
+        if '_' not in letras_atual:
+            print('PARABÉNS, VOCÊ GANHOU!')
+            break
+
+        print(' '.join(letras_atual))
+
+        print('As letras que você já digitou: ', letras_digitadas)
+
+
+def CafeComLeite():
+
+
+    inserir()
+
+
+    vidas = 6
+    letras_digitadas = []
+    letras_atual = ['_'] * len(palavra_sorteada)
+
+    while vidas != 0:
+
+        letra = input('Digite uma letra: ').upper()
+        letras_digitadas.append(letra)
+
+        if letra in palavra_sorteada:
+            print('Você acertou uma letra!')
+            for item in range(len(palavra_sorteada)):
+                if letra == palavra_sorteada[item]:
+                    letras_atual[item] = letra
+
+        else:
+            vidas -= 1
+            if vidas == 5:
+                palavra_index = palavras.index(palavra_sorteada.lower())
+                dica = dicas[palavra_index]
+                print(dica)
+        if '_' not in letras_atual:
+            print('PARABÉNS, VOCÊ GANHOU!')
+            break
+
+        print(' '.join(letras_atual))
+
+        print('As letras que você já digitou: ', letras_digitadas)
+
+
+print('---------- MODOS DE JOGO ----------')
+print('             NUTELLA                ')
+print('              CAFÉ                 ')
+print('              RAIZ                 ')
+print('>->->->->-> SAIR DO JOGO <-<-<-<-<-<')
+
+modo = input('ESCOLA UM DOS MODOS DE JOGO ACIMA:').upper()
+
+match modo:
+    case "NUTELLA":
+        Nutella()
+
+    case "CAFÉ":
+        CafeComLeite()
+
+    case "SAIR":
+        print('QUE PENA, VOCÊ SAIU DO JOGO! ATÉ A PROXIMA!')
