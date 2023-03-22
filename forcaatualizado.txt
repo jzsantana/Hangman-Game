@@ -1,25 +1,57 @@
 import random
+from threading import Timer
 import os
-import time
 
-# função para inserir palavras e dicas no modo café com leite
+
+# Função para o jogador inserir uma nova palavra no jogo
 def inserir():
+    p = input('Digite uma nova palavra para o jogo: ')
+    palavras.append(p)
+    print(palavras)
+    dica = input('Agora, digite uma dica para esta palavra: ')
+    dicas.append(dica)
+    print('-------------------------------------')
+    print(dicas)
+
+
+# Função para o usuário remover uma palavra e uma dica
+def remover_palavra():
+    palavra_removida = input('Digite a palavra que você deseja remover: ')
+    if palavra_removida in palavras:
+        index = palavras.index(palavra_removida)
+        dica_removida = dicas[index]
+        palavras.remove(palavra_removida)
+        dicas.pop(index)
+        print(f'A palavra removida foi {palavra_removida} e a dica removida foi {dica_removida}')
+
+
+# Função para inserir palavras e dicas no modo café com leite
+def modo_inserir():
     print('------------------ MENU -------------------')
     print('-> INSERIR NOVA PALAVRA E DICA      [ 1 ] <-')
-    print('-> NÃO INSERIR NOVA PALAVRA E DICA  [ 2 ] <-')
-    print('-> SAIR DO JOGO                     [ 3 ] <-')
+    print('-> REMOVER PALAVRA E DICA           [ 2 ] <-')
+    print('-> JOGAR                            [ 3 ] <-')
+    print('-> SAIR DO JOGO                     [ 4 ] <-')
 
-    menu = int(input('------- DIGITE UMA DAS OPÇÕES ACIMA: -------'))
+    menu = int(input('------- DIGITE UMA DAS OPÇÕES ACIMA: -------\n'))
 
     match menu:
         case 1:
-            print('Digite uma nova palavra e uma nova dica')
-
+            inserir()
         case 2:
-            print('CONTINUE')
-
+            remover_palavra()
         case 3:
+            print('SEU JOGO IRÁ COMEÇAR!')
+        case 4:
             print('QUE PENA, VOCÊ SAIU DO JOGO! ATÉ A PROXIMA!')
+            quit()
+
+
+# Função de tempo
+def tempo(texto="Que pena, seu tempo esgotou!"):
+    print(f'Fim de jogo -- {texto}')
+    pid = os.getpid()
+    os.kill(pid, 0)
 
 
 print('->->->->->-> O JOGO COMEÇOU <-<-<-<-<-<-')
@@ -27,7 +59,7 @@ print('BEM VINDO(A) AO CLÁSSICO JOGO DA FORCA')
 
 
 palavras = ['artista', 'amor', 'pescador', 'livro', 'cadeira',
-                'banana', 'internet', 'morango', 'bailarina', 'cadeado',
+            'banana', 'internet', 'morango', 'bailarina', 'cadeado',
             'biscoito', 'pacote', 'shampoo', 'mercado'
             ]
 
@@ -40,7 +72,7 @@ dicas = ['aquele que cultiva as belas-artes', 'Forte afeição por outra pessoa'
 palavra_sorteada = random.choice(palavras).upper()
 
 
-def Nutella():
+def nutella():
     vidas = 6
     letras_digitadas = []
     letras_atual = ['_'] * len(palavra_sorteada)
@@ -51,52 +83,58 @@ def Nutella():
         letras_digitadas.append(letra)
 
         if letra in palavra_sorteada:
-            print('Você acertou uma letra!')
+            print('VOCÊ ACERTOU UMA LETRA!')
             for item in range(len(palavra_sorteada)):
                 if letra == palavra_sorteada[item]:
                     letras_atual[item] = letra
 
         else:
+            print('ihh, você errou!')
             vidas -= 1
             if vidas == 5:
                 palavra_index = palavras.index(palavra_sorteada.lower())
                 dica = dicas[palavra_index]
-                print(dica)
+                print(f'Aqui vai uma dica:\n {dica}')
+            elif vidas == 2:
+                palavra_index = palavras.index(palavra_sorteada.lower())
+                dica = dicas[palavra_index]
+                print(f'Aqui vai uma dica:\n {dica}')
         if '_' not in letras_atual:
             print('PARABÉNS, VOCÊ GANHOU!')
             break
 
         print(' '.join(letras_atual))
 
-        print('As letras que você já digitou: ', letras_digitadas)
+        print('Tentativas: ', letras_digitadas)
 
 
-def CafeComLeite():
+def cafecomleite():
 
-
-    inserir()
-
+    modo_inserir()
 
     vidas = 6
     letras_digitadas = []
     letras_atual = ['_'] * len(palavra_sorteada)
 
     while vidas != 0:
-
+        temporizador = Timer(5, tempo)
+        temporizador.start()
         letra = input('Digite uma letra: ').upper()
         letras_digitadas.append(letra)
 
         if letra in palavra_sorteada:
-            print('Você acertou uma letra!')
+            print('VOCÊ ACERTOU UMA LETRA!')
             for item in range(len(palavra_sorteada)):
                 if letra == palavra_sorteada[item]:
                     letras_atual[item] = letra
 
         else:
+            print('Ihh, você errou!')
             vidas -= 1
-            if vidas == 5:
+            if vidas == 4:
                 palavra_index = palavras.index(palavra_sorteada.lower())
                 dica = dicas[palavra_index]
+                print('Aqui vai uma dica: ')
                 print(dica)
         if '_' not in letras_atual:
             print('PARABÉNS, VOCÊ GANHOU!')
@@ -104,23 +142,27 @@ def CafeComLeite():
 
         print(' '.join(letras_atual))
 
-        print('As letras que você já digitou: ', letras_digitadas)
+        print('Tentativas: ', letras_digitadas)
 
 
-print('---------- MODOS DE JOGO ----------')
-print('             NUTELLA                ')
-print('              CAFÉ                 ')
-print('              RAIZ                 ')
-print('>->->->->-> SAIR DO JOGO <-<-<-<-<-<')
+print('>------------- MODOS DE JOGO --------------<')
+print('->                NUTELLA                 <-')
+print('->                 CAFÉ                   <-')
+print('->                 RAIZ                   <-')
+print('->             SAIR DO JOGO               <-')
 
-modo = input('ESCOLA UM DOS MODOS DE JOGO ACIMA:').upper()
+modo = input('ESCOLA UM DOS MODOS DE JOGO ACIMA: \n').upper()
 
 match modo:
     case "NUTELLA":
-        Nutella()
+        nutella()
 
     case "CAFÉ":
-        CafeComLeite()
+        cafecomleite()
+
+    case "RAIZ":
+        print('MODO RAIZ')
 
     case "SAIR":
-        print('QUE PENA, VOCÊ SAIU DO JOGO! ATÉ A PROXIMA!')
+        print('QUE PENA, VOCÊ CLICOU EM SAIR DO JOGO! ATÉ A PROXIMA!')
+
