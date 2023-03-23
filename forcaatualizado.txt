@@ -48,11 +48,6 @@ def modo_inserir():
 
 
 # Função de tempo
-def tempo(texto="Que pena, seu tempo esgotou!"):
-    print(f'Fim de jogo -- {texto}')
-    pid = os.getpid()
-    os.kill(pid, 0)
-
 
 print('->->->->->-> O JOGO COMEÇOU <-<-<-<-<-<-')
 print('BEM VINDO(A) AO CLÁSSICO JOGO DA FORCA')
@@ -117,8 +112,6 @@ def cafecomleite():
     letras_atual = ['_'] * len(palavra_sorteada)
 
     while vidas != 0:
-        temporizador = Timer(5, tempo)
-        temporizador.start()
         letra = input('Digite uma letra: ').upper()
         letras_digitadas.append(letra)
 
