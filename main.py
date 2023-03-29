@@ -14,7 +14,7 @@ def inserir():
     print(dicas)
 
 
-# Função para o usuário remover uma palavra e uma dica.
+# Função para o usuário remover uma palavra e uma dica
 def remover_palavra():
     palavra_removida = input('Digite a palavra que você deseja remover: ')
     if palavra_removida in palavras:
@@ -48,9 +48,14 @@ def modo_inserir():
 
 
 # Função de tempo
+def tempo(texto="Que pena, seu tempo esgotou!"):
+    print(f'Fim de jogo -- {texto}')
+    pid = os.getpid()
+    os.kill(pid, 0)
 
-print('->->->->->-> O JOGO COMEÇOU <-<-<-<-<-<-')
-print('BEM VINDO(A) AO CLÁSSICO JOGO DA FORCA')
+
+print('\n->->->->->->-> O JOGO COMEÇOU <-<-<-<-<-<-<-\n')
+print('   BEM VINDO(A) AO CLÁSSICO JOGO DA FORCA\n')
 
 
 palavras = ['artista', 'amor', 'pescador', 'livro', 'cadeira',
@@ -112,6 +117,8 @@ def cafecomleite():
     letras_atual = ['_'] * len(palavra_sorteada)
 
     while vidas != 0:
+        temporizador = Timer(30, tempo)
+        temporizador.start()
         letra = input('Digite uma letra: ').upper()
         letras_digitadas.append(letra)
 
@@ -134,8 +141,57 @@ def cafecomleite():
             break
 
         print(' '.join(letras_atual))
-
         print('Tentativas: ', letras_digitadas)
+
+        if temporizador == 0:
+            print('FIM DE JOGO')
+            quit()
+        elif vidas == 0:
+            temporizador.cancel()
+            print('Ihhh, suas vidas acabaram. Perdeu fracote!')
+            quit()
+
+
+def raiz():
+    vidas = 6
+    letras_digitadas = []
+    letras_atual = ['_'] * len(palavra_sorteada)
+
+    print('SEJA BEM VINDO(A) AO MODO RAIZ')
+    while vidas != 0:
+        temporizador = Timer(10, tempo)
+        temporizador.start()
+        letra = input('Digite uma letra: ').upper()
+        letras_digitadas.append(letra)
+
+        if letra in palavra_sorteada:
+            print('VOCÊ ACERTOU UMA LETRA!')
+            for item in range(len(palavra_sorteada)):
+                if letra == palavra_sorteada[item]:
+                    letras_atual[item] = letra
+
+        else:
+            print('Ihh, você errou!')
+            vidas -= 1
+            if vidas == 1:
+                palavra_index = palavras.index(palavra_sorteada.lower())
+                dica = dicas[palavra_index]
+                print('Aqui vai uma dica: ')
+                print(dica)
+        if '_' not in letras_atual:
+            print('PARABÉNS, VOCÊ GANHOU!')
+            break
+
+        print(' '.join(letras_atual))
+        print('Tentativas: ', letras_digitadas)
+
+        if temporizador == 0:
+            print('FIM DE JOGO')
+            quit()
+        elif vidas == 0:
+            temporizador.cancel()
+            print('Ihhh, suas vidas acabaram. Perdeu fracote!')
+            quit()
 
 
 print('>------------- MODOS DE JOGO --------------<')
@@ -143,8 +199,10 @@ print('->                NUTELLA                 <-')
 print('->                 CAFÉ                   <-')
 print('->                 RAIZ                   <-')
 print('->             SAIR DO JOGO               <-')
+print('>------------------------------------------<\n')
 
-modo = input('ESCOLA UM DOS MODOS DE JOGO ACIMA: \n').upper()
+
+modo = input('ESCOLHA UM DOS MODOS DE JOGO ACIMA: \n').upper()
 
 match modo:
     case "NUTELLA":
@@ -154,7 +212,7 @@ match modo:
         cafecomleite()
 
     case "RAIZ":
-        print('MODO RAIZ')
+        raiz()
 
     case "SAIR":
         print('QUE PENA, VOCÊ CLICOU EM SAIR DO JOGO! ATÉ A PROXIMA!')
