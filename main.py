@@ -14,7 +14,7 @@ def inserir():
     print(dicas)
 
 
-# Função para o usuário remover uma palavra e uma dica
+# Função para o usuário remover uma palavra e uma dica.
 def remover_palavra():
     palavra_removida = input('Digite a palavra que você deseja remover: ')
     if palavra_removida in palavras:
